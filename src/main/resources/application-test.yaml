@@ -1,0 +1,6 @@
+application:
+  frontend:
+    base-url: http://localhost:3000
+  security:
+    secret-key: "mySuperSecretKeyForJwtSigningMustBeLongEnoughToSatisfyHS256Requirements"
+    access-token-expiration-in-millis: 360000

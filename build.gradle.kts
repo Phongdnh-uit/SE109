@@ -46,6 +46,8 @@ sonar {
 }
 
 dependencies {
+    val rsqlVersion = "6.0.33"
+
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-flyway")
@@ -53,11 +55,16 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	implementation("org.flywaydb:flyway-mysql")
     implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1")
+    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server")
+	implementation("org.mapstruct:mapstruct:1.6.3")
+    implementation("io.github.perplexhub:rsql-jpa-spring-boot-starter:$rsqlVersion")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	runtimeOnly("com.mysql:mysql-connector-j")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 	testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-flyway-test")
