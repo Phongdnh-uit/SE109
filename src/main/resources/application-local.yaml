@@ -32,3 +32,10 @@ springdoc:
   swagger-ui:
     try-it-out-enabled: true
   default-produces-media-type: application/json
+
+application:
+  frontend:
+    base-url: http://localhost:3000
+  security:
+    secret-key: "mySuperSecretKeyForJwtSigningMustBeLongEnoughToSatisfyHS256Requirements"
+    access-token-expiration-in-millis: 360000
