@@ -1,5 +1,6 @@
 package com.uit.se109.mappers;
 
+import com.uit.se109.dto.auth.RegisterRequest;
 import com.uit.se109.dto.user.UserRequest;
 import com.uit.se109.dto.user.UserResponse;
 import com.uit.se109.dto.user.UserSummary;
@@ -9,4 +10,7 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper
-    extends GenericMapper<User, UserRequest, UserRequest, UserResponse, UserSummary> {}
+    extends GenericMapper<User, UserRequest, UserRequest, UserResponse, UserSummary> {
+
+  User requestToEntity(RegisterRequest request);
+}

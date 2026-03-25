@@ -1,6 +1,7 @@
 package com.uit.se109.configs;
 
 import com.uit.se109.constants.SecurityConstant;
+import com.uit.se109.securities.jwt.CustomJwtConverter;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,8 @@ public class SecurityConfig {
 
   @Bean
   @Order(2)
-  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  SecurityFilterChain securityFilterChain(HttpSecurity http, CustomJwtConverter customJwtConverter)
+      throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -48,7 +50,9 @@ public class SecurityConfig {
                     .requestMatchers(SecurityConstant.PUBLIC_URLS)
                     .permitAll()
                     .anyRequest()
-                    .authenticated());
+                    .authenticated())
+        .oauth2ResourceServer(
+            oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(customJwtConverter)));
 
     return http.build();
   }
