@@ -1,11 +1,13 @@
 package com.uit.se109.dto.property;
 
+import com.uit.se109.entities.BaseEntity;
 import java.math.BigDecimal;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class PropertyResponse {
-  private Long id;
+@Getter
+@Setter
+public class PropertyResponse extends BaseEntity {
   private String title;
   private String purpose;
   private String type;
