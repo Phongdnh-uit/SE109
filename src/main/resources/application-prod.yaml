@@ -1,0 +1,34 @@
+spring:
+  # Cấu hình data source cho môi trường local
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # Cấu hình JPA cho môi trường local
+  jpa:
+    hibernate:
+      ddl-auto: validate # Validate khi có flyway
+    show-sql: false # Hiển thị câu lệnh SQL trong log để tối ưu khi cần
+
+  # Cấu hình tự động hỗ trợ docker khi chạy ứng dụng local
+  docker:
+    compose:
+      enabled: false
+
+logging:
+  level:
+    root: ERROR
+    org.hibernate.SQL: ERROR
+
+springdoc:
+  default-produces-media-type: application/json
+
+application:
+  frontend:
+    base-url: ${FRONTEND_BASE_URL}
+  security:
+    secret-key: ${SECRET_KEY}
+    access-token-expiration-in-millis: ${ACCESS_TOKEN_EXPIRATION_IN_MILLIS}
+    refresh-token-expiration-in-millis: ${REFRESH_TOKEN_EXPIRATION_IN_MILLIS}
