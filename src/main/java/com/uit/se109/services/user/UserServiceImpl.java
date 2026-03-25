@@ -68,7 +68,8 @@ public class UserServiceImpl implements UserService {
     if (ValidationHelper.existsByDifferentId(id, "email", input.getEmail(), repository)) {
       errors.put("email", "Email already exists");
     }
-    if (ValidationHelper.existsByDifferentId(id, "phoneNumber", input.getPhoneNumber(), repository)) {
+    if (ValidationHelper.existsByDifferentId(
+        id, "phoneNumber", input.getPhoneNumber(), repository)) {
       errors.put("phoneNumber", "Phone already exists");
     }
     if (ValidationHelper.existsByDifferentId(id, "username", input.getUsername(), repository)) {

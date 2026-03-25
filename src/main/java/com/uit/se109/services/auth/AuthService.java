@@ -1,5 +1,6 @@
 package com.uit.se109.services.auth;
 
+import com.uit.se109.dto.auth.ChangePasswordRequest;
 import com.uit.se109.dto.auth.LoginRequest;
 import com.uit.se109.dto.auth.LoginResponse;
 import com.uit.se109.dto.auth.RefreshRequest;
@@ -11,19 +12,17 @@ public interface AuthService {
 
   LoginResponse refreshToken(RefreshRequest request);
 
-  // void logout(RefreshTokenRequest request);
+  void logout(RefreshRequest request);
 
   UserResponse register(RegisterRequest request);
-  //
+
+  void changePassword(ChangePasswordRequest request);
+
+  UserResponse getCurrentUser();
+
   // void verifyEmail(VerifyEmailRequest request);
   //
   // void resetPassword(ResetPasswordRequest request);
   //
-  // void changePassword(ChangePasswordRequest request);
-  //
-  // UserResponse getCurrentUser();
-  //
   // UserResponse updateCurrentUser(BaseUserRequest request);
-  //
-  // List<String> getCurrentPermissionCodes();
 }

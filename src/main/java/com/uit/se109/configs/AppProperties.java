@@ -24,5 +24,6 @@ public class AppProperties {
   public static class Security {
     private String secretKey;
     private long accessTokenExpirationInMillis;
+    private long refreshTokenExpirationInMillis;
   }
 }
