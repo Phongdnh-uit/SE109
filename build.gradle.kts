@@ -47,6 +47,7 @@ sonar {
 
 dependencies {
     val rsqlVersion = "6.0.33"
+    val lokiVersion = "2.0.3"
 
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -59,6 +60,7 @@ dependencies {
 	implementation("org.mapstruct:mapstruct:1.6.3")
     implementation("io.github.perplexhub:rsql-jpa-spring-boot-starter:$rsqlVersion")
     implementation ("io.micrometer:micrometer-registry-prometheus")
+    implementation ("com.github.loki4j:loki-logback-appender:$lokiVersion")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")

@@ -5,3 +5,8 @@ application:
     secret-key: "mySuperSecretKeyForJwtSigningMustBeLongEnoughToSatisfyHS256Requirements"
     access-token-expiration-in-millis: 360000
     monitoring-secret: Helloworld
+
+loki:
+  url: http://localhost:3100/loki/api/v1/push
+  username: loki_user
+  password: loki_password
