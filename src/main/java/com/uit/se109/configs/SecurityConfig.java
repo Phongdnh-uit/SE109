@@ -1,6 +1,7 @@
 package com.uit.se109.configs;
 
 import com.uit.se109.constants.SecurityConstant;
+import com.uit.se109.securities.filter.PrometheusSecurityFilter;
 import com.uit.se109.securities.jwt.CustomJwtConverter;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
 @RequiredArgsConstructor
@@ -36,16 +38,20 @@ public class SecurityConfig {
 
   @Bean
   @Order(2)
-  SecurityFilterChain securityFilterChain(HttpSecurity http, CustomJwtConverter customJwtConverter)
+  SecurityFilterChain securityFilterChain(
+      HttpSecurity http,
+      CustomJwtConverter customJwtConverter,
+      PrometheusSecurityFilter prometheusSecurityFilter)
       throws Exception {
-    http.csrf(AbstractHttpConfigurer::disable)
+    http.addFilterBefore(prometheusSecurityFilter, BearerTokenAuthenticationFilter.class)
+        .csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth ->
                 auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                     .permitAll()
-                    .requestMatchers(EndpointRequest.to("health", "info"))
+                    .requestMatchers(EndpointRequest.to("health", "info", "prometheus"))
                     .permitAll()
                     .requestMatchers(SecurityConstant.PUBLIC_URLS)
                     .permitAll()

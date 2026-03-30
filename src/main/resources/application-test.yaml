@@ -4,3 +4,4 @@ application:
   security:
     secret-key: "mySuperSecretKeyForJwtSigningMustBeLongEnoughToSatisfyHS256Requirements"
     access-token-expiration-in-millis: 360000
+    monitoring-secret: Helloworld

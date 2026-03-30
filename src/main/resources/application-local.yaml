@@ -33,6 +33,51 @@ springdoc:
     try-it-out-enabled: true
   default-produces-media-type: application/json
 
+management:
+  endpoints:
+    web:
+      exposure:
+        # Chỉ expose những gì thực sự cần thiết
+        include: health, info, prometheus
+  endpoint:
+    health:
+      show-details: never # Không show chi tiết DB, Disk cho người dùng công cộng, sửa lại when-authorized nếu có security
+      probes:
+        enabled: true # Bật Liveness và Readiness probes cho Render
+    # prometheus:
+    #   access: read-only
+  metrics:
+    tags:
+      application: ${spring.application.name} # Lấy tên app tự động
+      env: local
+    distribution:
+      percentiles:
+        http:
+          server:
+            requests:
+              - 0.95
+              - 0.99 # Định nghĩa percentiles cho tất cả các endpoint HTTP server
+      percentiles-histogram:
+        http:
+          server:
+            requests: true # Bật histogram cho tất cả các endpoint HTTP server
+      slo:
+        http:
+          server:
+            requests:
+              - 100ms
+              - 300ms
+              - 500ms
+              - 1s # Định nghĩa SLO cho các endpoint HTTP server
+      maximum-expected-value:
+        http:
+          server:
+            requests: 10s # Giới hạn giá trị tối đa cho histogram để tránh bị ảnh hưởng bởi outliers
+      minimum-expected-value:
+        http:
+          server:
+            requests: 10ms # Giới hạn giá trị tối thiểu cho histogram để tránh bị ảnh hưởng bởi outliers
+
 application:
   frontend:
     base-url: http://localhost:3000
@@ -40,3 +85,4 @@ application:
     secret-key: "mySuperSecretKeyForJwtSigningMustBeLongEnoughToSatisfyHS256Requirements"
     access-token-expiration-in-millis: 3600000
     refresh-token-expiration-in-millis: 36000000
+    monitoring-secret: Helloworld

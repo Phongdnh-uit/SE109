@@ -25,5 +25,6 @@ public class AppProperties {
     private String secretKey;
     private long accessTokenExpirationInMillis;
     private long refreshTokenExpirationInMillis;
+    private String monitoringSecret;
   }
 }

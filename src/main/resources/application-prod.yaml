@@ -25,6 +25,52 @@ logging:
 springdoc:
   default-produces-media-type: application/json
 
+management:
+  endpoints:
+    web:
+      exposure:
+        # Chỉ expose những gì thực sự cần thiết
+        include: health, info, prometheus
+      base-path: ${ACTUATOR_BASE_PATH:/actuator} # Thay đổi path mặc định (/actuator) để tăng tính bảo mật
+  endpoint:
+    health:
+      show-details: never # Không show chi tiết DB, Disk cho người dùng công cộng, sửa lại when-authorized nếu có security
+      probes:
+        enabled: true # Bật Liveness và Readiness probes cho Render
+    # prometheus:
+    #   access: read-only
+  metrics:
+    tags:
+      application: ${spring.application.name} # Lấy tên app tự động
+      env: prod
+    distribution:
+      percentiles:
+        http:
+          server:
+            requests:
+              - 0.95
+              - 0.99 # Định nghĩa percentiles cho tất cả các endpoint HTTP server
+      percentiles-histogram:
+        http:
+          server:
+            requests: true # Bật histogram cho tất cả các endpoint HTTP server
+      slo:
+        http:
+          server:
+            requests:
+              - 100ms
+              - 300ms
+              - 500ms
+              - 1s # Định nghĩa SLO cho các endpoint HTTP server
+      maximum-expected-value:
+        http:
+          server:
+            requests: 10s # Giới hạn giá trị tối đa cho histogram để tránh bị ảnh hưởng bởi outliers
+      minimum-expected-value:
+        http:
+          server:
+            requests: 10ms # Giới hạn giá trị tối thiểu cho histogram để tránh bị ảnh hưởng bởi outliers
+
 application:
   frontend:
     base-url: ${FRONTEND_BASE_URL}
@@ -32,3 +78,4 @@ application:
     secret-key: ${SECRET_KEY}
     access-token-expiration-in-millis: ${ACCESS_TOKEN_EXPIRATION_IN_MILLIS}
     refresh-token-expiration-in-millis: ${REFRESH_TOKEN_EXPIRATION_IN_MILLIS}
+    monitoring-secret: ${MONITORING_SECRET}
