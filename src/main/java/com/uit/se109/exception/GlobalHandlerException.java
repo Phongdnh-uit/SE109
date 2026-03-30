@@ -1,8 +1,10 @@
 package com.uit.se109.exception;
 
 import com.uit.se109.dto.ApiResponse;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -18,6 +20,19 @@ public class GlobalHandlerException {
     response.setErrors(ex.getDetails());
     log.error("AppException occurred: {}", ex.getMessage(), ex);
     return ResponseEntity.status(ex.getErrorCode().getHttpStatus()).body(response);
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ApiResponse<Void>> handleValidationException(
+      MethodArgumentNotValidException ex) {
+    ApiResponse<Void> response = new ApiResponse<>();
+    response.setCode(ErrorCode.VALIDATION_ERROR.getCode());
+    response.setMessage(ErrorCode.VALIDATION_ERROR.getMessage());
+    response.setErrors(
+        ex.getBindingResult().getFieldErrors().stream()
+            .collect(Collectors.toMap(ext -> ext.getField(), ext -> ext.getDefaultMessage())));
+    log.error("Validation error: {}", response.getErrors(), ex);
+    return ResponseEntity.status(400).body(response);
   }
 
   @ExceptionHandler({Exception.class, RuntimeException.class})

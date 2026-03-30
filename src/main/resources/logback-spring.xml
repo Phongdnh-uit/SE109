@@ -8,7 +8,7 @@
             <charset>utf8</charset>
         </encoder>
     </appender>
-    <springProperty scope="context" name="name" source="spring.application.name"/>
+    <springProperty scope="context" name="name" source="spring.application.name" defaultValue="se109"/>
     <springProperty scope="context" name="LOKI_URL" source="loki.url"/>
     <springProperty scope="context" name="LOKI_USERNAME" source="loki.username"/>
     <springProperty scope="context" name="LOKI_PASSWORD" source="loki.password"/>
