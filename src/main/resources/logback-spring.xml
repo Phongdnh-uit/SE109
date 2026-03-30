@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>        
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+    <springProperty scope="context" name="name" source="spring.application.name"/>
+    <springProperty scope="context" name="LOKI_URL" source="loki.url"/>
+    <springProperty scope="context" name="LOKI_USERNAME" source="loki.username"/>
+    <springProperty scope="context" name="LOKI_PASSWORD" source="loki.password"/>
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http>
+            <url>${LOKI_URL}</url>
+            <auth>
+                <username>${LOKI_USERNAME}</username>
+                <password>${LOKI_PASSWORD}</password>
+            </auth>
+        </http>
+        <format>
+            <label>
+                <pattern>app=${name},host=${HOSTNAME},level=%level</pattern>
+                <readMarkers>true</readMarkers>
+            </label>
+            <message class="com.github.loki4j.logback.JsonLayout">
+                <item>
+                    <key>level</key>
+                    <value>%level</value>
+                </item>
+                <item>
+                    <key>logger</key>
+                    <value>%logger{36}</value>
+                </item>
+                <item>
+                    <key>thread</key>
+                    <value>%thread</value>
+                </item>
+                <item>
+                    <key>message</key>
+                    <value>%message</value>
+                </item>
+                <item>
+                    <key>requestId</key>
+                    <value>%X{X-Request-ID}</value>
+                </item>
+            </message>
+         </format>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="LOKI" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>

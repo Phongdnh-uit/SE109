@@ -79,3 +79,8 @@ application:
     access-token-expiration-in-millis: ${ACCESS_TOKEN_EXPIRATION_IN_MILLIS}
     refresh-token-expiration-in-millis: ${REFRESH_TOKEN_EXPIRATION_IN_MILLIS}
     monitoring-secret: ${MONITORING_SECRET}
+
+loki:
+  url: ${LOKI_URL}
+  username: ${LOKI_USERNAME}
+  password: ${LOKI_PASSWORD}
