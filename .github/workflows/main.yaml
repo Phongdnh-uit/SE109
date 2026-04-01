@@ -47,3 +47,10 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/se109-backend:latest
+      - name: Trigger deployment workflow
+        env:
+          DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
+        run: |
+          curl --fail --silent --show-error \
+           --max-time 30 \
+           -X POST "$DEPLOY_URL" 
