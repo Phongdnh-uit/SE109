@@ -1,5 +1,6 @@
 package com.uit.se109.entities;
 
+import com.uit.se109.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,4 +23,8 @@ public class User extends BaseEntity {
   private String fullName;
 
   private String phoneNumber;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private UserStatus status = UserStatus.PENDING;
 }
