@@ -1,10 +1,13 @@
 package com.uit.se109.services.auth;
 
 import com.uit.se109.dto.auth.ChangePasswordRequest;
+import com.uit.se109.dto.auth.ForgotPasswordRequest;
 import com.uit.se109.dto.auth.LoginRequest;
 import com.uit.se109.dto.auth.LoginResponse;
 import com.uit.se109.dto.auth.RefreshRequest;
 import com.uit.se109.dto.auth.RegisterRequest;
+import com.uit.se109.dto.auth.ResetPasswordRequest;
+import com.uit.se109.dto.auth.VerifyOtpRequest;
 import com.uit.se109.dto.user.UserResponse;
 
 public interface AuthService {
@@ -20,9 +23,9 @@ public interface AuthService {
 
   UserResponse getCurrentUser();
 
-  // void verifyEmail(VerifyEmailRequest request);
-  //
-  // void resetPassword(ResetPasswordRequest request);
-  //
-  // UserResponse updateCurrentUser(BaseUserRequest request);
+  void verifyOtp(VerifyOtpRequest request);
+
+  void forgotPassword(ForgotPasswordRequest request);
+
+  void resetPassword(ResetPasswordRequest request);
 }

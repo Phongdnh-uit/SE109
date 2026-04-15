@@ -2,10 +2,13 @@ package com.uit.se109.controllers;
 
 import com.uit.se109.dto.ApiResponse;
 import com.uit.se109.dto.auth.ChangePasswordRequest;
+import com.uit.se109.dto.auth.ForgotPasswordRequest;
 import com.uit.se109.dto.auth.LoginRequest;
 import com.uit.se109.dto.auth.LoginResponse;
 import com.uit.se109.dto.auth.RefreshRequest;
 import com.uit.se109.dto.auth.RegisterRequest;
+import com.uit.se109.dto.auth.ResetPasswordRequest;
+import com.uit.se109.dto.auth.VerifyOtpRequest;
 import com.uit.se109.dto.user.UserResponse;
 import com.uit.se109.services.auth.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,6 +56,26 @@ public class AuthController {
   public ResponseEntity<ApiResponse<Void>> changePassword(
       @Valid @RequestBody ChangePasswordRequest request) {
     authService.changePassword(request);
+    return ResponseEntity.ok(ApiResponse.ok(null));
+  }
+
+  @PostMapping("/verify-otp")
+  public ResponseEntity<ApiResponse<Void>> verifyOtp(@Valid @RequestBody VerifyOtpRequest request) {
+    authService.verifyOtp(request);
+    return ResponseEntity.ok(ApiResponse.ok(null));
+  }
+
+  @PostMapping("/forgot-password")
+  public ResponseEntity<ApiResponse<Void>> forgotPassword(
+      @Valid @RequestBody ForgotPasswordRequest request) {
+    authService.forgotPassword(request);
+    return ResponseEntity.ok(ApiResponse.ok(null));
+  }
+
+  @PostMapping("/reset-password")
+  public ResponseEntity<ApiResponse<Void>> resetPassword(
+      @Valid @RequestBody ResetPasswordRequest request) {
+    authService.resetPassword(request);
     return ResponseEntity.ok(ApiResponse.ok(null));
   }
 

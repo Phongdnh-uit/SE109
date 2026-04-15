@@ -13,6 +13,9 @@ public enum ErrorCode {
   REFRESH_TOKEN_EXPIRED(3002, "The provided refresh token has expired.", 401),
   USER_NOT_FOUND(3003, "User not found.", 404),
   INVALID_CREDENTIAL(3004, "Invalid username or password.", 401),
+  INVALID_OTP(3005, "The provided OTP is invalid.", 400),
+  TOKEN_EXPIRED(3006, "The provided token has expired.", 400),
+  USER_NOT_ACTIVE(3007, "User is not active. Please verify your email.", 403),
   ;
   private final Integer code;
   private final String message;
