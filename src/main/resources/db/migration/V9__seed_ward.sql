@@ -3320,3 +3320,9 @@ INSERT IGNORE INTO `wards` (`id`, `code`, `name`, `type`, `province_code`, `prov
 (2987, '29431', 'Vinh Kim', 'Xã', '86',2),
 (3016, '28894', 'Vĩnh Thành', 'Xã', '86',2),
 (2951, '29845', 'Vĩnh Xuân', 'Xã', '86',2);
+
+UPDATE wards w
+JOIN provinces p ON w.province_code = p.code
+SET w.province_id = p.id;
+
+ALTER TABLE wards DROP COLUMN province_code;
