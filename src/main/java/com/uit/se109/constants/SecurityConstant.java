@@ -9,6 +9,10 @@ public interface SecurityConstant {
     "/api/v1/auth/refresh",
     "/api/v1/auth/verify-otp",
     "/api/v1/auth/forgot-password",
-    "/api/v1/auth/reset-password"
+    "/api/v1/auth/reset-password",
+  };
+
+  String[] PUBLIC_GET_URLS = {
+    "/api/v1/properties/**", "/api/v1/provinces/**", "/api/v1/wards/**",
   };
 }
