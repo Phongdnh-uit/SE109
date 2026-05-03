@@ -22,6 +22,7 @@ import com.uit.se109.mappers.UserMapper;
 import com.uit.se109.repositories.RefreshTokenRepository;
 import com.uit.se109.repositories.UserRepository;
 import com.uit.se109.repositories.VerificationTokenRepository;
+import com.uit.se109.securities.CustomUserDetails;
 import com.uit.se109.securities.JwtProvider;
 import com.uit.se109.securities.SecurityUtil;
 import com.uit.se109.services.mail.EmailService;
@@ -53,23 +54,9 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public LoginResponse login(LoginRequest request) {
-    User user =
-        userRepository
-            .findByUsername(request.credential())
-            .or(() -> userRepository.findByEmail(request.credential()))
-            .orElseThrow(() -> new AppException(ErrorCode.INVALID_CREDENTIAL));
-
-    if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-      throw new AppException(ErrorCode.INVALID_CREDENTIAL);
-    }
-
-    if (user.getStatus() != UserStatus.ACTIVE) {
-      throw new AppException(ErrorCode.USER_NOT_ACTIVE);
-    }
-
     // 1. ---- Authenticate ----
     UsernamePasswordAuthenticationToken authenticationToken =
-        new UsernamePasswordAuthenticationToken(user.getUsername(), request.password());
+        new UsernamePasswordAuthenticationToken(request.credential(), request.password());
     Authentication authentication =
         authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
@@ -77,6 +64,7 @@ public class AuthServiceImpl implements AuthService {
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     // 3. ---- Generate JWT ----
+    CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
     Long userId = user.getId();
     String accessToken = jwtProvider.generateToken(userId);
     String refreshToken = jwtProvider.generateToken(userId);
