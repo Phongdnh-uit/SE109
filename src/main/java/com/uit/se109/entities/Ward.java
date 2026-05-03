@@ -21,8 +21,6 @@ public class Ward extends BaseEntity {
 
   private String type;
 
-  private String provinceCode;
-
   @ManyToOne
   @JoinColumn(name = "province_id", nullable = false)
   private Province province;
