@@ -13,6 +13,7 @@ public class PropertyResponse extends BaseEntity {
   private String type;
   private BigDecimal price;
   private String lineAddress;
+  private Long wardId;
   private BigDecimal landArea;
   private BigDecimal floorArea;
   private Integer floors;
