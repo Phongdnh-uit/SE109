@@ -5,10 +5,13 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomAuditorAware implements AuditorAware<Long> {
+public class CustomAuditorAware implements AuditorAware<String> {
 
   @Override
-  public Optional<Long> getCurrentAuditor() {
-    return Optional.ofNullable(SecurityUtil.getCurrentUserId());
+  public Optional<String> getCurrentAuditor() {
+    return Optional.ofNullable(
+        SecurityUtil.getCurrentUserId() != null
+            ? SecurityUtil.getCurrentUserId().toString()
+            : null);
   }
 }
