@@ -7,6 +7,7 @@ import com.uit.se109.dto.property.PropertySummary;
 import com.uit.se109.entities.Property;
 import com.uit.se109.mappers.PropertyMapper;
 import com.uit.se109.repositories.PropertyRepository;
+import com.uit.se109.securities.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,6 +23,17 @@ public class PropertyServiceImpl implements PropertyService {
   public PageResponse<PropertySummary> findAll(
       Pageable pageable, Specification<Property> specification) {
     return defaultFindAll(pageable, specification, mapper, repository);
+  }
+
+  @Override
+  public PageResponse<PropertySummary> findAllByMe(Pageable pageable) {
+    Long userId = SecurityUtil.getCurrentUserId();
+    if (userId == null) {
+      return PageResponse.fromPage(org.springframework.data.domain.Page.empty(pageable));
+    }
+    Specification<Property> spec =
+        (root, query, cb) -> cb.equal(root.get("createdBy"), userId.toString());
+    return defaultFindAll(pageable, spec, mapper, repository);
   }
 
   @Override
