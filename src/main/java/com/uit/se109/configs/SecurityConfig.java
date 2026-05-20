@@ -56,6 +56,8 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers(SecurityConstant.PUBLIC_URLS)
                     .permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/v1/properties/me")
+                    .authenticated()
                     .requestMatchers(HttpMethod.GET, SecurityConstant.PUBLIC_GET_URLS)
                     .permitAll()
                     .anyRequest()
