@@ -5,6 +5,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.Getter;
@@ -27,7 +29,9 @@ public class Property extends BaseEntity {
 
   private String lineAddress;
 
-  private String wardId;
+  @ManyToOne
+  @JoinColumn(name = "ward_id")
+  private Ward ward;
 
   @Column(precision = 10, scale = 2)
   private BigDecimal landArea;

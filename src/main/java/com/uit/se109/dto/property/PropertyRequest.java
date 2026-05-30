@@ -19,7 +19,7 @@ public class PropertyRequest {
   private BigDecimal price;
 
   private String lineAddress;
-  private String wardId;
+  private Long wardId;
   private BigDecimal landArea;
   private BigDecimal floorArea;
 

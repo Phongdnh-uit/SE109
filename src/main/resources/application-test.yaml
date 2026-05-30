@@ -10,3 +10,15 @@ loki:
   url: http://localhost:3100/loki/api/v1/push
   username: loki_user
   password: loki_password
+
+spring:
+  mail:
+    host: localhost
+    port: 1025
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+    from: "noreply@se109.com"

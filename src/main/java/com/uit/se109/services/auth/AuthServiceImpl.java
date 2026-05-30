@@ -2,24 +2,35 @@ package com.uit.se109.services.auth;
 
 import com.uit.se109.configs.AppProperties;
 import com.uit.se109.dto.auth.ChangePasswordRequest;
+import com.uit.se109.dto.auth.ForgotPasswordRequest;
 import com.uit.se109.dto.auth.LoginRequest;
 import com.uit.se109.dto.auth.LoginResponse;
 import com.uit.se109.dto.auth.RefreshRequest;
 import com.uit.se109.dto.auth.RegisterRequest;
+import com.uit.se109.dto.auth.ResetPasswordRequest;
+import com.uit.se109.dto.auth.VerifyOtpRequest;
 import com.uit.se109.dto.user.UserResponse;
 import com.uit.se109.entities.RefreshToken;
 import com.uit.se109.entities.User;
+import com.uit.se109.entities.VerificationToken;
+import com.uit.se109.enums.UserStatus;
+import com.uit.se109.enums.VerificationTokenType;
 import com.uit.se109.exception.AppException;
 import com.uit.se109.exception.ErrorCode;
 import com.uit.se109.helpers.ValidationHelper;
 import com.uit.se109.mappers.UserMapper;
 import com.uit.se109.repositories.RefreshTokenRepository;
 import com.uit.se109.repositories.UserRepository;
+import com.uit.se109.repositories.VerificationTokenRepository;
+import com.uit.se109.securities.CustomUserDetails;
 import com.uit.se109.securities.JwtProvider;
 import com.uit.se109.securities.SecurityUtil;
+import com.uit.se109.services.mail.EmailService;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -38,6 +49,8 @@ public class AuthServiceImpl implements AuthService {
   private final UserMapper userMapper;
   private final RefreshTokenRepository refreshTokenRepository;
   private final AppProperties appProperties;
+  private final VerificationTokenRepository verificationTokenRepository;
+  private final EmailService emailService;
 
   @Override
   public LoginResponse login(LoginRequest request) {
@@ -51,7 +64,8 @@ public class AuthServiceImpl implements AuthService {
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     // 3. ---- Generate JWT ----
-    Long userId = SecurityUtil.getCurrentUserId();
+    CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
+    Long userId = user.getId();
     String accessToken = jwtProvider.generateToken(userId);
     String refreshToken = jwtProvider.generateToken(userId);
     RefreshToken refreshTokenEntity = new RefreshToken();
@@ -109,7 +123,20 @@ public class AuthServiceImpl implements AuthService {
     User user = userMapper.requestToEntity(request);
 
     user.setPassword(passwordEncoder.encode(request.getPassword()));
+    user.setStatus(UserStatus.PENDING);
     user = userRepository.save(user);
+
+    // Generate OTP
+    String otp = String.format("%06d", new Random().nextInt(999999));
+    VerificationToken verificationToken = new VerificationToken();
+    verificationToken.setUser(user);
+    verificationToken.setToken(otp);
+    verificationToken.setType(VerificationTokenType.REGISTRATION_OTP);
+    verificationToken.setExpiryAt(Instant.now().plusSeconds(300)); // 5 mins
+    verificationTokenRepository.save(verificationToken);
+
+    emailService.sendRegistrationOtp(user.getEmail(), otp);
+
     return userMapper.entityToResponse(user);
   }
 
@@ -141,5 +168,63 @@ public class AuthServiceImpl implements AuthService {
             .findById(SecurityUtil.getCurrentUserId())
             .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
     return userMapper.entityToResponse(user);
+  }
+
+  @Override
+  public void verifyOtp(VerifyOtpRequest request) {
+    User user =
+        userRepository
+            .findByEmail(request.email())
+            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+    VerificationToken token =
+        verificationTokenRepository
+            .findByTokenAndUserAndType(request.otp(), user, VerificationTokenType.REGISTRATION_OTP)
+            .orElseThrow(() -> new AppException(ErrorCode.INVALID_OTP));
+
+    if (token.getExpiryAt().isBefore(Instant.now())) {
+      verificationTokenRepository.delete(token);
+      throw new AppException(ErrorCode.TOKEN_EXPIRED);
+    }
+
+    user.setStatus(UserStatus.ACTIVE);
+    userRepository.save(user);
+    verificationTokenRepository.delete(token);
+  }
+
+  @Override
+  public void forgotPassword(ForgotPasswordRequest request) {
+    User user =
+        userRepository
+            .findByEmail(request.getEmail())
+            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+    String token = UUID.randomUUID().toString();
+    VerificationToken verificationToken = new VerificationToken();
+    verificationToken.setUser(user);
+    verificationToken.setToken(token);
+    verificationToken.setType(VerificationTokenType.PASSWORD_RESET_TOKEN);
+    verificationToken.setExpiryAt(Instant.now().plusSeconds(900)); // 15 mins
+    verificationTokenRepository.save(verificationToken);
+
+    emailService.sendForgotPasswordToken(user.getEmail(), token);
+  }
+
+  @Override
+  public void resetPassword(ResetPasswordRequest request) {
+    VerificationToken tokenEntity =
+        verificationTokenRepository
+            .findByTokenAndType(request.getToken(), VerificationTokenType.PASSWORD_RESET_TOKEN)
+            .orElseThrow(() -> new AppException(ErrorCode.INVALID_OTP));
+
+    if (tokenEntity.getExpiryAt().isBefore(Instant.now())) {
+      verificationTokenRepository.delete(tokenEntity);
+      throw new AppException(ErrorCode.TOKEN_EXPIRED);
+    }
+
+    User user = tokenEntity.getUser();
+    user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+    userRepository.save(user);
+    verificationTokenRepository.delete(tokenEntity);
   }
 }

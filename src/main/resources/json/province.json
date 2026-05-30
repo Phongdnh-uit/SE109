@@ -1,0 +1,206 @@
+[
+  {
+    "id": 2,
+    "code": "91",
+    "name": "An Giang",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 3,
+    "code": "24",
+    "name": "Bắc Ninh",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 4,
+    "code": "96",
+    "name": "Cà Mau",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 6,
+    "code": "92",
+    "name": "Cần Thơ",
+    "type": "Thành phố"
+  },
+  {
+    "id": 5,
+    "code": "04",
+    "name": "Cao Bằng",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 7,
+    "code": "48",
+    "name": "Đà Nẵng",
+    "type": "Thành phố"
+  },
+  {
+    "id": 8,
+    "code": "66",
+    "name": "Đắk Lắk",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 9,
+    "code": "11",
+    "name": "Điện Biên",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 10,
+    "code": "75",
+    "name": "Đồng Nai",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 11,
+    "code": "82",
+    "name": "Đồng Tháp",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 12,
+    "code": "52",
+    "name": "Gia Lai",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 13,
+    "code": "01",
+    "name": "Hà Nội",
+    "type": "Thành phố"
+  },
+  {
+    "id": 14,
+    "code": "42",
+    "name": "Hà Tĩnh",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 15,
+    "code": "31",
+    "name": "Hải Phòng",
+    "type": "Thành phố"
+  },
+  {
+    "id": 37,
+    "code": "79",
+    "name": "Hồ Chí Minh",
+    "type": "Thành phố"
+  },
+  {
+    "id": 16,
+    "code": "46",
+    "name": "Huế",
+    "type": "Thành phố"
+  },
+  {
+    "id": 17,
+    "code": "33",
+    "name": "Hưng Yên",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 18,
+    "code": "56",
+    "name": "Khánh Hòa",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 19,
+    "code": "12",
+    "name": "Lai Châu",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 22,
+    "code": "68",
+    "name": "Lâm Đồng",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 20,
+    "code": "20",
+    "name": "Lạng Sơn",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 21,
+    "code": "15",
+    "name": "Lào Cai",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 23,
+    "code": "40",
+    "name": "Nghệ An",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 24,
+    "code": "37",
+    "name": "Ninh Bình",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 25,
+    "code": "25",
+    "name": "Phú Thọ",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 26,
+    "code": "51",
+    "name": "Quảng Ngãi",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 27,
+    "code": "22",
+    "name": "Quảng Ninh",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 28,
+    "code": "44",
+    "name": "Quảng Trị",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 29,
+    "code": "14",
+    "name": "Sơn La",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 30,
+    "code": "80",
+    "name": "Tây Ninh",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 31,
+    "code": "19",
+    "name": "Thái Nguyên",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 32,
+    "code": "38",
+    "name": "Thanh Hóa",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 34,
+    "code": "08",
+    "name": "Tuyên Quang",
+    "type": "Tỉnh"
+  },
+  {
+    "id": 35,
+    "code": "86",
+    "name": "Vĩnh Long",
+    "type": "Tỉnh"
+  }
+]
