@@ -2,6 +2,7 @@ package com.uit.se109.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.uit.se109.AbstractIntegrationTest;
 import com.uit.se109.entities.Property;
 import com.uit.se109.enums.PropertyStatus;
 import java.math.BigDecimal;
@@ -10,23 +11,12 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@Testcontainers
-@SpringBootTest
-@ActiveProfiles("test")
-class PropertyRepositoryTest {
-
-  @Container @ServiceConnection static MySQLContainer mysql = new MySQLContainer("mysql:latest");
+class PropertyRepositoryTest extends AbstractIntegrationTest {
 
   @Autowired private PropertyRepository propertyRepository;
 
