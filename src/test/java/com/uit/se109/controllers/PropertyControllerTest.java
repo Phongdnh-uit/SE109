@@ -14,11 +14,10 @@ import com.uit.se109.dto.PageResponse;
 import com.uit.se109.dto.property.PropertyRequest;
 import com.uit.se109.dto.property.PropertyResponse;
 import com.uit.se109.dto.property.PropertySummary;
-import com.uit.se109.entities.Property;
 import com.uit.se109.enums.PropertyStatus;
 import com.uit.se109.securities.filter.PrometheusSecurityFilter;
 import com.uit.se109.securities.jwt.CustomJwtConverter;
-import com.uit.se109.services.CrudService;
+import com.uit.se109.services.PropertyService;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,10 +54,7 @@ class PropertyControllerTest {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
 
-  @MockitoBean
-  private CrudService<
-          Property, Long, PropertyRequest, PropertyRequest, PropertyResponse, PropertySummary>
-      propertyService;
+  @MockitoBean private PropertyService propertyService;
 
   private PropertyRequest propertyRequest;
   private PropertyResponse propertyResponse;
@@ -72,7 +68,7 @@ class PropertyControllerTest {
     propertyRequest.setType("Apartment");
     propertyRequest.setPrice(new BigDecimal("500000000"));
     propertyRequest.setLineAddress("123 Main Street");
-    propertyRequest.setWardId("ward123");
+    propertyRequest.setWardId(12L);
     propertyRequest.setLandArea(new BigDecimal("100"));
     propertyRequest.setFloorArea(new BigDecimal("80"));
     propertyRequest.setFloors(5);

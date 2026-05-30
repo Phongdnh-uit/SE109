@@ -21,8 +21,10 @@ import com.uit.se109.exception.ErrorCode;
 import com.uit.se109.mappers.UserMapper;
 import com.uit.se109.repositories.RefreshTokenRepository;
 import com.uit.se109.repositories.UserRepository;
+import com.uit.se109.repositories.VerificationTokenRepository;
 import com.uit.se109.securities.CustomUserDetails;
 import com.uit.se109.securities.JwtProvider;
+import com.uit.se109.services.mail.EmailService;
 import java.time.Instant;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
@@ -50,6 +52,8 @@ class AuthServiceImplTest {
   @Mock private UserMapper userMapper;
   @Mock private RefreshTokenRepository refreshTokenRepository;
   @Mock private AppProperties appProperties;
+  @Mock private VerificationTokenRepository verificationTokenRepository;
+  @Mock private EmailService emailService;
 
   @InjectMocks private AuthServiceImpl authService;
 
@@ -122,6 +126,8 @@ class AuthServiceImplTest {
     when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
     when(userRepository.save(any(User.class))).thenReturn(user);
     when(userMapper.entityToResponse(user)).thenReturn(userResponse);
+    when(verificationTokenRepository.save(any()))
+        .thenAnswer(invocation -> invocation.getArgument(0));
 
     // Act
     UserResponse response = authService.register(registerRequest);
