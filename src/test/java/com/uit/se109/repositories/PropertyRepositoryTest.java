@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -83,8 +83,7 @@ class PropertyRepositoryTest {
 
   @Test
   void shouldFilterByTitleSpecification() {
-    Specification<Property> spec =
-        (root, query, cb) -> cb.like(root.get("title"), "%Apartment%");
+    Specification<Property> spec = (root, query, cb) -> cb.like(root.get("title"), "%Apartment%");
 
     List<Property> result = propertyRepository.findAll(spec);
 
@@ -95,7 +94,8 @@ class PropertyRepositoryTest {
   @Test
   void shouldFilterByPriceRangeSpecification() {
     Specification<Property> spec =
-        (root, query, cb) -> cb.between(root.get("price"), new BigDecimal("150000000"), new BigDecimal("500000000"));
+        (root, query, cb) ->
+            cb.between(root.get("price"), new BigDecimal("150000000"), new BigDecimal("500000000"));
 
     List<Property> result = propertyRepository.findAll(spec);
 
@@ -107,11 +107,12 @@ class PropertyRepositoryTest {
   void shouldFilterByCombinedSpecification() {
     Specification<Property> priceSpec =
         (root, query, cb) -> cb.greaterThan(root.get("price"), new BigDecimal("200000000"));
-        
+
     Specification<Property> statusSpec =
         (root, query, cb) -> cb.equal(root.get("status"), PropertyStatus.AVAILABLE);
 
-    List<Property> result = propertyRepository.findAll(Specification.where(priceSpec).and(statusSpec));
+    List<Property> result =
+        propertyRepository.findAll(Specification.where(priceSpec).and(statusSpec));
 
     assertThat(result).hasSize(2); // Luxury Villa and Modern Apartment
   }

@@ -79,7 +79,10 @@ class UserServiceImplTest {
   void shouldThrowExceptionWhenCreateUserWithExistingEmail() {
     // Arrange
     // Return true for the first exists call (email)
-    when(userRepository.exists(any(Specification.class))).thenReturn(true).thenReturn(false).thenReturn(false);
+    when(userRepository.exists(any(Specification.class)))
+        .thenReturn(true)
+        .thenReturn(false)
+        .thenReturn(false);
 
     // Act & Assert
     assertThatThrownBy(() -> userService.create(userRequest))
@@ -111,7 +114,10 @@ class UserServiceImplTest {
     // Arrange
     when(userRepository.findById(1L)).thenReturn(Optional.of(user));
     // Return true for exists (meaning it exists for a different user ID)
-    when(userRepository.exists(any(Specification.class))).thenReturn(false).thenReturn(false).thenReturn(true);
+    when(userRepository.exists(any(Specification.class)))
+        .thenReturn(false)
+        .thenReturn(false)
+        .thenReturn(true);
 
     // Act & Assert
     assertThatThrownBy(() -> userService.update(1L, userRequest))
