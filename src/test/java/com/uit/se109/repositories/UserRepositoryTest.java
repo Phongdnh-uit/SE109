@@ -2,25 +2,15 @@ package com.uit.se109.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.uit.se109.AbstractIntegrationTest;
 import com.uit.se109.entities.User;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@Testcontainers
-@SpringBootTest
-@ActiveProfiles("test")
-class UserRepositoryTest {
-
-  @Container @ServiceConnection static MySQLContainer mysql = new MySQLContainer("mysql:latest");
+class UserRepositoryTest extends AbstractIntegrationTest {
 
   @Autowired private UserRepository userRepository;
 
