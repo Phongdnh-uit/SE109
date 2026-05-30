@@ -143,7 +143,8 @@ class PropertyServiceImplTest {
     Pageable pageable = PageRequest.of(0, 10);
     Specification<Property> spec = null;
     Page<Property> propertyPage = new PageImpl<>(List.of(property), pageable, 1);
-    PropertySummary propertySummary = PropertySummary.builder().id(1L).title("Test Property").build();
+    PropertySummary propertySummary =
+        PropertySummary.builder().id(1L).title("Test Property").build();
 
     when(propertyRepository.findAll(eq(spec), eq(pageable))).thenReturn(propertyPage);
     when(propertyMapper.entityToSummaryResponse(property)).thenReturn(propertySummary);

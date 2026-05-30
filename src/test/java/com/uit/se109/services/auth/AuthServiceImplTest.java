@@ -3,9 +3,6 @@ package com.uit.se109.services.auth;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -83,16 +80,17 @@ class AuthServiceImplTest {
     // Arrange
     LoginRequest loginRequest = new LoginRequest("testuser", "password");
     AuthenticationManager authenticationManager = mock(AuthenticationManager.class);
-    
+
     CustomUserDetails userDetails = CustomUserDetails.builder().id(1L).username("testuser").build();
-    Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-    
+    Authentication authentication =
+        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
     when(authenticationManagerBuilder.getObject()).thenReturn(authenticationManager);
     when(authenticationManager.authenticate(any(Authentication.class))).thenReturn(authentication);
-    
+
     when(jwtProvider.generateToken(1L)).thenReturn("access-token").thenReturn("refresh-token");
     when(userRepository.getReferenceById(1L)).thenReturn(user);
-    
+
     AppProperties.Security securityProps = new AppProperties.Security();
     securityProps.setRefreshTokenExpirationInMillis(86400000L);
     when(appProperties.getSecurity()).thenReturn(securityProps);
@@ -142,7 +140,10 @@ class AuthServiceImplTest {
     registerRequest.setPassword("password");
     registerRequest.setEmail("existing@example.com");
 
-    when(userRepository.exists(any(Specification.class))).thenReturn(true).thenReturn(false).thenReturn(false);
+    when(userRepository.exists(any(Specification.class)))
+        .thenReturn(true)
+        .thenReturn(false)
+        .thenReturn(false);
 
     // Act & Assert
     assertThatThrownBy(() -> authService.register(registerRequest))
@@ -155,9 +156,12 @@ class AuthServiceImplTest {
     // Arrange
     RefreshRequest refreshRequest = new RefreshRequest("old-refresh-token");
 
-    when(refreshTokenRepository.findOne(any(Specification.class))).thenReturn(Optional.of(refreshToken));
-    when(jwtProvider.generateToken(1L)).thenReturn("new-access-token").thenReturn("new-refresh-token");
-    
+    when(refreshTokenRepository.findOne(any(Specification.class)))
+        .thenReturn(Optional.of(refreshToken));
+    when(jwtProvider.generateToken(1L))
+        .thenReturn("new-access-token")
+        .thenReturn("new-refresh-token");
+
     AppProperties.Security securityProps = new AppProperties.Security();
     securityProps.setRefreshTokenExpirationInMillis(86400000L);
     when(appProperties.getSecurity()).thenReturn(securityProps);
@@ -178,13 +182,14 @@ class AuthServiceImplTest {
     RefreshRequest refreshRequest = new RefreshRequest("old-refresh-token");
     refreshToken.setExpiryAt(Instant.now().minusMillis(100000)); // expired
 
-    when(refreshTokenRepository.findOne(any(Specification.class))).thenReturn(Optional.of(refreshToken));
+    when(refreshTokenRepository.findOne(any(Specification.class)))
+        .thenReturn(Optional.of(refreshToken));
 
     // Act & Assert
     assertThatThrownBy(() -> authService.refreshToken(refreshRequest))
         .isInstanceOf(AppException.class)
         .hasFieldOrPropertyWithValue("errorCode", ErrorCode.REFRESH_TOKEN_EXPIRED);
-    
+
     verify(refreshTokenRepository, times(1)).delete(refreshToken);
   }
 }
