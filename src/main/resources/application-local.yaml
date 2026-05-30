@@ -1,9 +1,9 @@
 spring:
   # Cấu hình data source cho môi trường local
   datasource:
-    url: jdbc:mysql://localhost:5432/mydatabase
-    username: secret
-    password: verysecret
+    url: jdbc:mysql://localhost:3306/mydatabase
+    username: myuser
+    password: secret
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   # Cấu hình JPA cho môi trường local
