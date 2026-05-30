@@ -79,6 +79,7 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers-mysql")
 	testImplementation("org.mockito:mockito-core")
 	testImplementation("org.mockito:mockito-junit-jupiter")
+	testImplementation("org.junit.platform:junit-platform-suite")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
