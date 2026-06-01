@@ -3,6 +3,7 @@ package com.uit.se109.exception;
 import com.uit.se109.dto.ApiResponse;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,6 +34,17 @@ public class GlobalHandlerException {
             .collect(Collectors.toMap(ext -> ext.getField(), ext -> ext.getDefaultMessage())));
     log.error("Validation error: {}", response.getErrors(), ex);
     return ResponseEntity.status(400).body(response);
+  }
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<ApiResponse<Void>> handleDataIntegrityViolationException(
+      DataIntegrityViolationException ex) {
+    log.error("Data integrity violation: ", ex);
+    ApiResponse<Void> response = new ApiResponse<>();
+    response.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
+    response.setMessage(
+        "Data integrity violation occurred. Possible duplicate entry or constraint violation.");
+    return ResponseEntity.status(409).body(response);
   }
 
   @ExceptionHandler({Exception.class, RuntimeException.class})

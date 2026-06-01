@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.context.Context;
@@ -20,6 +21,7 @@ public class EmailServiceImpl implements EmailService {
   private final ITemplateEngine templateEngine;
   private final AppProperties appProperties;
 
+  @Async
   @Override
   public void sendRegistrationOtp(String to, String otp) {
     Context context = new Context();
@@ -28,6 +30,7 @@ public class EmailServiceImpl implements EmailService {
     sendEmail(to, "Email Verification", content);
   }
 
+  @Async
   @Override
   public void sendForgotPasswordToken(String to, String token) {
     Context context = new Context();
