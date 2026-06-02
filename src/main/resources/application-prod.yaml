@@ -30,10 +30,10 @@ spring:
             enable: true
     from: ${MAIL_FROM:noreply@se109.com}
 
-logging:
-  level:
-    root: ERROR
-    org.hibernate.SQL: ERROR
+# logging:
+#   level:
+#     root: ERROR
+#     org.hibernate.SQL: ERROR
 
 springdoc:
   default-produces-media-type: application/json
