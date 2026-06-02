@@ -97,3 +97,6 @@ loki:
   url: ${LOKI_URL}
   username: ${LOKI_USERNAME}
   password: ${LOKI_PASSWORD}
+
+server:
+  port: ${PORT:8080}
